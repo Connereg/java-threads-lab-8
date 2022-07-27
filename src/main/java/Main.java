@@ -23,8 +23,11 @@ public class Main {
 
 
         listOfStringFutures.add(futureString4);
+        listOfStringFutures.get(4).cancel(true);
         listOfStringFutures.add(futureString5);
+        listOfStringFutures.get(5).cancel(true);
         listOfStringFutures.add(futureString6);
+        listOfStringFutures.get(6).cancel(true);
 
         System.out.println("Count finished before thread sleep: " + countFinishedFutures(listOfStringFutures));
         Thread.sleep(200);
@@ -34,15 +37,20 @@ public class Main {
 //        System.out.println("Now we can call for future values: " + futureString1.get() + futureString2.get() + futureString3.get());
 
     }
+
     public static int countFinishedFutures(List<Future> futures) {
         // your code here
         int futureNum = 0;
         for (Future future : futures) {
-            if (future.isDone()) {
-                futureNum++;
+            if (!future.isCancelled()) {
+                if (future.isDone()) {
+                    futureNum++;
+                }
+            }
+            else {
+                System.out.println("A Future is not eligable");
             }
         }
         return futureNum;
-
     }
 }
